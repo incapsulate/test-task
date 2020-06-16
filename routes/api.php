@@ -6,7 +6,7 @@ Route::group(['prefix' => 'v1'], function() {
             Route::get('{user}', 'API\UserController@get');
         });
 
-        Route::post('registration', 'API\AuthController@registration');
+        Route::post('registration', 'API\AuthController@register');
         Route::post('login', 'API\AuthController@login');
     });
 });
