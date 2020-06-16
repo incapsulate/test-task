@@ -10,6 +10,10 @@ use Illuminate\Http\Request;
 
 class AuthController extends Controller
 {
+    /**
+     * @param RegisterRequest $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function register(RegisterRequest $request)
     {
         try {
@@ -35,6 +39,10 @@ class AuthController extends Controller
         ]);
     }
 
+    /**
+     * @param LoginRequest $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function login(LoginRequest $request)
     {
         if (!auth()->attempt(['email' => $request->email, 'password' => $request->password])) {
@@ -51,5 +59,16 @@ class AuthController extends Controller
             ],
         ]);
     }
-    
+
+    /**
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function logout()
+    {
+        auth()->user()->token()->revoke();
+
+        return response()->json([
+            'status' => 'success',
+        ]);
+    }
 }
