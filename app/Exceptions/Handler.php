@@ -2,7 +2,9 @@
 
 namespace App\Exceptions;
 
+use App\Exceptions\Custom\ValidationException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Auth\AuthenticationException;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -50,6 +52,20 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Throwable $exception)
     {
-        return parent::render($request, $exception);
+        switch (true){
+            case ($exception instanceof ValidationException):
+                return response()->json([
+                    'status' => 'error',
+                    'error' => $exception->getMessage(),
+                ], 422);
+
+            case ($exception instanceof AuthenticationException):
+                return response()->json([
+                    'status' => 'error',
+                    'error' => 'Not Authenticate',
+                ], 401);
+            default:
+                return parent::render($request, $exception);
+        }
     }
 }
