@@ -31,12 +31,11 @@ class AuthController extends Controller
 
         auth()->login($user);
 
-        return response()->json([
-            'status' => 'success',
-            'data'   => [
-                'token' => auth()->user()->createToken('user')->accessToken,
-            ],
-        ]);
+        return response()
+            ->json([
+                'status' => 'success',
+            ])
+            ->header('Authorization', auth()->user()->createToken('user')->accessToken);
     }
 
     /**
@@ -52,12 +51,26 @@ class AuthController extends Controller
             ], 401);
         }
 
-        return response()->json([
-            'status' => 'success',
-            'data'   => [
-                'token' => auth()->user()->createToken('user')->accessToken,
-            ],
-        ]);
+        return response()
+            ->json([
+                'status' => 'success',
+            ])
+            ->header('Authorization', auth()->user()->createToken('user')->accessToken);
+    }
+
+    /**
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function refresh()
+    {
+        if ($token = $this->guard()->refresh()) {
+            return response()
+                ->json([
+                    'status' => 'success'
+                ])
+                ->header('Authorization', $token);
+        }
+        return response()->json(['error' => 'refresh_token_error'], 401);
     }
 
     /**
@@ -70,5 +83,10 @@ class AuthController extends Controller
         return response()->json([
             'status' => 'success',
         ]);
+    }
+
+    private function guard()
+    {
+        return auth()->guard();
     }
 }

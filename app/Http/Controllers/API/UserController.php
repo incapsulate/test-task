@@ -9,11 +9,11 @@ use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
-    public function get(User $user)
+    public function get()
     {
         return response()->json([
             'status' => 'success',
-            'data'   => new UserResource($user),
+            'data'   => new UserResource(auth()->user()),
         ]);
     }
 }
