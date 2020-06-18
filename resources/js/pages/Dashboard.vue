@@ -15,7 +15,7 @@
                         </div>
                         <div class="input-group mb-3">
                             <div class="input-group-prepend">
-                                <span class="input-group-text">Email</span>
+                                <span class="input-group-text">E-mail</span>
                             </div>
                             <span class="form-control">{{ user.email }}</span>
                         </div>

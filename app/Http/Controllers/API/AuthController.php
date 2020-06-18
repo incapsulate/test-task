@@ -61,21 +61,6 @@ class AuthController extends Controller
     /**
      * @return \Illuminate\Http\JsonResponse
      */
-    public function refresh()
-    {
-        if ($token = $this->guard()->refresh()) {
-            return response()
-                ->json([
-                    'status' => 'success'
-                ])
-                ->header('Authorization', $token);
-        }
-        return response()->json(['error' => 'refresh_token_error'], 401);
-    }
-
-    /**
-     * @return \Illuminate\Http\JsonResponse
-     */
     public function logout()
     {
         auth()->user()->token()->revoke();
@@ -83,10 +68,5 @@ class AuthController extends Controller
         return response()->json([
             'status' => 'success',
         ]);
-    }
-
-    private function guard()
-    {
-        return auth()->guard();
     }
 }
